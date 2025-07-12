@@ -54,7 +54,7 @@ const HeroSlider = () => {
   };
 
   return (
-    <div className="bg-yellow-custom pt-16">
+    <div className="bg-[url('/images/background/background.jpg')] bg-cover bg-center">
       <div className="container-custom">
         <div className="pt-16 pb-8">
           {/* Welcome Text */}
@@ -64,10 +64,10 @@ const HeroSlider = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-black mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 mt-4">
               Selamat Datang,
             </h1>
-            <p className="text-xl md:text-2xl text-black">
+            <p className="text-xl md:text-2xl text-white">
               di Website BUMDes GENTAN
             </p>
             <motion.button
@@ -165,7 +165,7 @@ const HeroSlider = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="py-8"
             >
-              <h2 className="text-3xl font-bold text-black">MAGGOT</h2>
+              <h2 className="text-3xl font-bold text-white">MAGGOT</h2>
             </motion.div>
 
             <motion.div
@@ -174,7 +174,7 @@ const HeroSlider = () => {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="py-8"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-black">GELIMPAH</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-white">GELIMPAH</h2>
             </motion.div>
 
             <motion.div
@@ -183,7 +183,7 @@ const HeroSlider = () => {
               transition={{ duration: 0.8, delay: 1.0 }}
               className="py-8"
             >
-              <h2 className="text-3xl font-bold text-black">USAHA</h2>
+              <h2 className="text-3xl font-bold text-white">USAHA</h2>
             </motion.div>
           </div>
         </div>
