@@ -60,7 +60,7 @@ const Footer = () => {
             viewport={{ once: true }}
             className="mt-12 flex justify-center space-x-6"
           >
-            {socialLinks.map((social, index) => (
+            {socialLinks.map((social) => (
               <motion.a
                 key={social.label}
                 href={social.href}
@@ -93,7 +93,7 @@ const Footer = () => {
             
             {/* Social Icons Small */}
             <div className="flex space-x-4">
-              {socialLinks.map((social, index) => (
+              {socialLinks.map((social) => (
                 <motion.a
                   key={`bottom-${social.label}`}
                   href={social.href}
