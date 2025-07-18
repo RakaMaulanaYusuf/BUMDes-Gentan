@@ -1,320 +1,303 @@
-'use client';
-
+/* eslint-disable @next/next/no-img-element */
 // src/components/home/HeroSlider.tsx
+'use client'; 
+
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; 
 
 const HeroSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isDragging, setIsDragging] = useState(false);
+  const [isDragging] = useState(false); 
+  const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>({});
 
-  // Mock data untuk slider
+  // Mock data for slider
   const slides = [
     {
       id: 1,
-      image: '/images/slider/slide1.jpg',
+      image: '/images/slider/fotogelimpah.jpg',
       title: 'Selamat Datang di BUMDes Gentan',
-      subtitle: 'Membangun Desa Melalui Kewirausahaan'
+      subtitle: 'Membangun Desa Melalui Kewirausahaan',
+      fallbackColor: 'from-emerald-400 to-emerald-600',
     },
     {
       id: 2,
-      image: '/images/slider/slide2.jpg',
+      image: '/images/slider/fotoecozyme.jpg',
       title: 'Inovasi untuk Kemajuan Desa',
-      subtitle: 'Bersama Menciptakan Peluang Usaha'
+      subtitle: 'Bersama Menciptakan Peluang Usaha',
+      fallbackColor: 'from-blue-400 to-blue-600',
     },
     {
       id: 3,
-      image: '/images/slider/slide3.jpg',
+      image: '/images/slider/fotousaha.jpg',
       title: 'Pemberdayaan Masyarakat',
-      subtitle: 'Menuju Desa Mandiri dan Sejahtera'
-    }
+      subtitle: 'Menuju Desa Mandiri dan Sejahtera',
+      fallbackColor: 'from-purple-400 to-purple-600',
+    },
   ];
 
-  // Auto slide setiap 4 detik (lebih lambat untuk animasi halus)
+  // Auto slide every 5 seconds
   useEffect(() => {
     if (isAutoPlaying && !isDragging) {
       const interval = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);
-      }, 4000);
+      }, 5000);
       return () => clearInterval(interval);
     }
   }, [isAutoPlaying, isDragging, slides.length]);
 
+  const handleSlideChange = (newSlideIndex: number) => {
+    setCurrentSlide(newSlideIndex);
+  };
+
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    handleSlideChange((currentSlide + 1) % slides.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    handleSlideChange((currentSlide - 1 + slides.length) % slides.length);
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
+  const handleImageError = (id: number) => {
+    setImageErrors((prev) => ({ ...prev, [id]: true }));
   };
 
-  // Handle drag/swipe gesture
-  const handleDragEnd = (event: unknown, info: PanInfo) => {
-    const threshold = 100; // Minimum drag distance
-    
-    if (info.offset.x > threshold) {
-      // Drag right - previous slide
-      prevSlide();
-    } else if (info.offset.x < -threshold) {
-      // Drag left - next slide
-      nextSlide();
-    }
-    setIsDragging(false);
-  };
-
-  const handleDragStart = () => {
-    setIsDragging(true);
-  };
-
-  // Function untuk mendapatkan index slide
+  // Function to get slide indices for peek view
   const getPrevIndex = () => (currentSlide - 1 + slides.length) % slides.length;
   const getNextIndex = () => (currentSlide + 1) % slides.length;
 
+  // Animation variants for Framer Motion
+  const sliderVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '100%' : '-100%',
+      opacity: 0,
+    }),
+    center: {
+      x: '0%',
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? '100%' : '-100%',
+      opacity: 0,
+    }),
+  };
+
   return (
-    <div className="bg-[url('/images/background/background.jpg')] bg-cover bg-center">
-      <div className="bg-black/40">
-        <div className="container-custom">
-          <div className="pt-16 pb-8">
-            {/* Welcome Text */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-12"
-            >
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 mt-4">
-                Selamat Datang,
-              </h1>
-              <p className="text-xl md:text-2xl text-white">
-                di Website BUMDes GENTAN
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="mt-6 bg-gray-800 text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors duration-200"
-              >
-                Tentang Kami
-              </motion.button>
-            </motion.div>
+    <div className="relative min-h-screen flex flex-col overflow-hidden">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 bg-[url('/images/background/background.jpg')] bg-cover bg-center">
+        <div className="absolute inset-0 bg-black/40"></div>
+      </div>
 
-            {/* CAROUSEL SLIDER - 3 GAMBAR BESAR DENGAN DRAG */}
-            <div className="relative mb-16 overflow-hidden">
+      {/* Content Container */}
+      <div className="relative z-10 flex-grow flex flex-col">
+        {/* Welcome Text Section */}
+        <div className="container mx-auto px-4 pt-16 flex-shrink-0">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mt-8 animate-fadeInUp">
+              Selamat Datang,
+            </h1>
+            <p className="text-xl md:text-2xl text-white animate-fadeInUp animation-delay-200">
+              di Website BUMDes GENTAN
+            </p>
+            <button className="mt-6 bg-gray-800/80 backdrop-blur-sm text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-700/80 transition-all duration-300 hover:scale-105 animate-fadeInUp animation-delay-400">
+              Tentang Kami
+            </button>
+          </div>
+        </div>
+
+        {/* CAROUSEL SLIDER - Center with Peek View */}
+        <div className="relative flex-grow flex flex-col justify-center">
+          <div
+            className="flex items-center justify-center gap-4 md:gap-6 lg:gap-8 w-full py-8 px-4 overflow-hidden"
+            onMouseEnter={() => setIsAutoPlaying(false)}
+            onMouseLeave={() => setIsAutoPlaying(true)}
+          >
+            {/* LEFT IMAGE (Peek View) - Only visible on desktop */}
+            <div className="hidden md:block">
               <motion.div
-                className="flex items-center justify-center gap-8 px-4 cursor-grab active:cursor-grabbing"
-                onMouseEnter={() => setIsAutoPlaying(false)}
-                onMouseLeave={() => setIsAutoPlaying(true)}
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-                whileDrag={{ scale: 0.98 }}
+                key={slides[getPrevIndex()].id + '-prev'} 
+                initial="enter"
+                animate="center"
+                exit="exit"
+                variants={sliderVariants}
+                custom={-1} 
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+                className="relative overflow-hidden cursor-pointer transition-all duration-700 ease-out flex-shrink-0
+                  w-[85vw] h-[45vh] md:w-[55vw] md:h-[55vh] lg:w-[50vw] lg:h-[60vh] shadow-2xl hover:scale-105 rounded-xl z-10 opacity-70 hover:opacity-90 transform translate-x-4
+                "
+                onClick={prevSlide}
               >
-                {/* GAMBAR KIRI - Ukuran Besar */}
-                <motion.div
-                  key={`left-${currentSlide}`}
-                  initial={{ opacity: 0, x: 200 }}
-                  animate={{ opacity: 0.7, x: 0 }}
-                  exit={{ opacity: 0, x: -200 }}
-                  transition={{ 
-                    duration: 0.6, 
-                    ease: "easeInOut"
-                  }}
-                  className="relative cursor-pointer"
-                  onClick={prevSlide}
-                >
-                  <div className="w-80 h-56 rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`left-content-${currentSlide}`}
-                        initial={{ x: 150, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: -150, opacity: 0 }}
-                        transition={{ duration: 0.4 }}
-                        className="w-full h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center"
-                      >
-                        <div className="text-center p-6">
-                          <div className="w-16 h-16 bg-green-custom rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
-                            <span className="text-white font-bold text-xl">
-                              {getPrevIndex() + 1}
-                            </span>
-                          </div>
-                          <h3 className="text-sm font-bold text-green-custom mb-2">
-                            {slides[getPrevIndex()].title.substring(0, 25)}...
-                          </h3>
-                          <p className="text-xs text-gray-600">
-                            {slides[getPrevIndex()].subtitle.substring(0, 30)}...
-                          </p>
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-                </motion.div>
-
-                {/* GAMBAR TENGAH - Ukuran SANGAT BESAR (HIGHLIGHTED) */}
-                <motion.div
-                  key={`center-${currentSlide}`}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1.15 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ 
-                    duration: 0.6, 
-                    ease: "easeInOut"
-                  }}
-                  className="relative z-30"
-                  onClick={nextSlide}
-                >
-                  <div className="w-[25rem] h-80 rounded-3xl shadow-2xl overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-300 ring-4 ring-green-custom/30 mx-10">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`center-content-${currentSlide}`}
-                        initial={{ x: 200, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: -200, opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="w-full h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center relative"
-                      >
-                        <div className="text-center p-10">
-                          <div className="w-24 h-24 bg-green-custom rounded-full mx-auto mb-6 flex items-center justify-center shadow-xl">
-                            <span className="text-white font-bold text-3xl">
-                              {currentSlide + 1}
-                            </span>
-                          </div>
-                          <h3 className="text-xl font-bold text-green-custom mb-4">
-                            {slides[currentSlide].title}
-                          </h3>
-                          <p className="text-base text-gray-600 leading-relaxed">
-                            {slides[currentSlide].subtitle}
-                          </p>
-                        </div>
-                        
-                        {/* Auto-slide indicator */}
-                        <div className="absolute bottom-4 right-4">
-                          <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                            className="w-8 h-8 border-3 border-green-custom border-t-transparent rounded-full"
-                          />
-                        </div>
-
-                        {/* Drag indicator
-                        <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-                          <motion.div
-                            animate={{ x: [-8, 8, -8] }}
-                            transition={{ repeat: Infinity, duration: 2.5 }}
-                            className="bg-white/90 px-4 py-2 rounded-full text-xs font-medium text-green-custom shadow-lg"
-                          >
-                            ← Geser untuk navigasi →
-                          </motion.div>
-                        </div> */}
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-                </motion.div>
-
-                {/* GAMBAR KANAN - Ukuran Besar */}
-                <motion.div
-                  key={`right-${currentSlide}`}
-                  initial={{ opacity: 0, x: 200 }}
-                  animate={{ opacity: 0.7, x: 0 }}
-                  exit={{ opacity: 0, x: -200 }}
-                  transition={{ 
-                    duration: 0.6, 
-                    ease: "easeInOut"
-                  }}
-                  className="relative cursor-pointer"
-                  onClick={nextSlide}
-                >
-                  <div className="w-80 h-56 rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`right-content-${currentSlide}`}
-                        initial={{ x: 150, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: -150, opacity: 0 }}
-                        transition={{ duration: 0.4 }}
-                        className="w-full h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center"
-                      >
-                        <div className="text-center p-6">
-                          <div className="w-16 h-16 bg-green-custom rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
-                            <span className="text-white font-bold text-xl">
-                              {getNextIndex() + 1}
-                            </span>
-                          </div>
-                          <h3 className="text-sm font-bold text-green-custom mb-2">
-                            {slides[getNextIndex()].title.substring(0, 25)}...
-                          </h3>
-                          <p className="text-xs text-gray-600">
-                            {slides[getNextIndex()].subtitle.substring(0, 30)}...
-                          </p>
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-                </motion.div>
-              </motion.div>
-
-              {/* Slide Indicators */}
-              <div className="flex justify-center space-x-4 mt-12">
-                {slides.map((_, index) => (
-                  <motion.button
-                    key={index}
-                    whileHover={{ scale: 1.3 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => goToSlide(index)}
-                    className={`w-5 h-5 rounded-full transition-all duration-500 ${
-                      index === currentSlide 
-                        ? 'bg-green-custom shadow-xl ring-6 ring-green-custom/40' 
-                        : 'bg-white/70 hover:bg-white/90'
-                    }`}
+                {!imageErrors[slides[getPrevIndex()].id] ? (
+                  <img
+                    src={slides[getPrevIndex()].image}
+                    alt={slides[getPrevIndex()].title}
+                    className="w-full h-full object-cover rounded-inherit transition-all duration-700"
+                    onError={() => handleImageError(slides[getPrevIndex()].id)}
                   />
-                ))}
-              </div>
-
-              {/* Auto-play status */}
-              <div className="text-center mt-6">
-                <p className="text-white/90 text-sm font-medium">
-                  {isDragging ? 'Menggeser...' : 'Auto-slide aktif • Geser atau hover untuk pause'}
-                </p>
-              </div>
+                ) : (
+                  <div
+                    className={`w-full h-full bg-gradient-to-br ${slides[getPrevIndex()].fallbackColor} flex items-center justify-center rounded-inherit`}
+                  >
+                    <div className="text-center p-4 md:p-6">
+                      <div className="w-12 h-12 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center transition-all duration-300">
+                        <span className="text-white font-bold text-lg">
+                          {slides[getPrevIndex()].id}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-black/40 hover:bg-black/25 transition-all duration-300 rounded-inherit" />
+              </motion.div>
             </div>
 
-            {/* Section Labels */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            {/* CENTER IMAGE (ACTIVE) - Always visible */}
+            <AnimatePresence initial={false}>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="py-8"
+                key={slides[currentSlide].id} 
+                initial="enter"
+                animate="center"
+                exit="exit"
+                variants={sliderVariants}
+                custom={currentSlide > (currentSlide - 1 + slides.length) % slides.length ? 1 : -1} 
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+                className="relative overflow-hidden cursor-pointer flex-shrink-0
+                  w-[85vw] h-[45vh] md:w-[55vw] md:h-[55vh] lg:w-[50vw] lg:h-[60vh] shadow-2xl scale-100 rounded-2xl z-20
+                "
               >
-                <h2 className="text-3xl font-bold text-white">MAGGOT</h2>
-              </motion.div>
+                {!imageErrors[slides[currentSlide].id] ? (
+                  <img
+                    src={slides[currentSlide].image}
+                    alt={slides[currentSlide].title}
+                    className="w-full h-full object-cover rounded-inherit transition-all duration-700"
+                    onError={() => handleImageError(slides[currentSlide].id)}
+                  />
+                ) : (
+                  <div
+                    className={`w-full h-full bg-gradient-to-br ${slides[currentSlide].fallbackColor} flex items-center justify-center rounded-inherit`}
+                  >
+                    <div className="text-center p-4 md:p-6">
+                      <div className="w-20 h-20 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center transition-all duration-300">
+                        <span className="text-white font-bold text-2xl">
+                          {slides[currentSlide].id}
+                        </span>
+                      </div>
+                      <h3 className="text-white font-bold text-lg mb-2">
+                        {slides[currentSlide].title}
+                      </h3>
+                      <p className="text-white/90 text-sm">
+                        {slides[currentSlide].subtitle}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {/* Content overlay for active slide */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end rounded-inherit">
+                  <div className="text-white p-6 md:p-8 w-full">
+                    <h3
+                      className={`text-2xl md:text-4xl font-bold mb-3 transition-all duration-500`}
+                    >
+                      {slides[currentSlide].title}
+                    </h3>
+                    <p
+                      className={`text-white/90 text-base md:text-lg transition-all duration-500 delay-100`}
+                    >
+                      {slides[currentSlide].subtitle}
+                    </p>
+                  </div>
+                </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-                className="py-8"
-              >
-                <h2 className="text-4xl md:text-5xl font-bold text-white">GELIMPAH</h2>
-              </motion.div>
+                {/* Navigation Arrows for Mobile */}
+                <button
+                  onClick={prevSlide}
+                  className="md:hidden absolute left-2 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-2 rounded-full transition-all duration-300 z-30"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
 
+                <button
+                  onClick={nextSlide}
+                  className="md:hidden absolute right-2 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-2 rounded-full transition-all duration-300 z-30"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* RIGHT IMAGE (Peek View) - Only visible on desktop */}
+            <div className="hidden md:block">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.0 }}
-                className="py-8"
+                key={slides[getNextIndex()].id + '-next'} 
+                initial="enter"
+                animate="center"
+                exit="exit"
+                variants={sliderVariants}
+                custom={1} 
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+                className="relative overflow-hidden cursor-pointer transition-all duration-700 ease-out flex-shrink-0
+                  w-[85vw] h-[45vh] md:w-[55vw] md:h-[55vh] lg:w-[50vw] lg:h-[60vh] shadow-2xl hover:scale-105 rounded-xl z-10 opacity-70 hover:opacity-90 transform -translate-x-4
+                "
+                onClick={nextSlide}
               >
-                <h2 className="text-3xl font-bold text-white">USAHA</h2>
+                {!imageErrors[slides[getNextIndex()].id] ? (
+                  <img
+                    src={slides[getNextIndex()].image}
+                    alt={slides[getNextIndex()].title}
+                    className="w-full h-full object-cover rounded-inherit transition-all duration-700"
+                    onError={() => handleImageError(slides[getNextIndex()].id)}
+                  />
+                ) : (
+                  <div
+                    className={`w-full h-full bg-gradient-to-br ${slides[getNextIndex()].fallbackColor} flex items-center justify-center rounded-inherit`}
+                  >
+                    <div className="text-center p-4 md:p-6">
+                      <div className="w-12 h-12 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center transition-all duration-300">
+                        <span className="text-white font-bold text-lg">
+                          {slides[getNextIndex()].id}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-black/40 hover:bg-black/25 transition-all duration-300 rounded-inherit" />
               </motion.div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Custom CSS Animations */}
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fadeInUp {
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animation-delay-200 {
+          animation-delay: 0.2s;
+          opacity: 0; /* Ensure it starts hidden for the animation to work */
+        }
+
+        .animation-delay-400 {
+          animation-delay: 0.4s;
+          opacity: 0; /* Ensure it starts hidden for the animation to work */
+        }
+      `}</style>
     </div>
   );
 };

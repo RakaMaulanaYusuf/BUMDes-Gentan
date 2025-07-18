@@ -6,33 +6,68 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden; /* Prevent horizontal scroll */
   }
   
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    background-color: #f8f9fa;
+    background-color: #f8fafc;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    position: relative;
+  }
+
+  /* Prevent horizontal overflow on all elements */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Fix for mobile viewport issues */
+  @media (max-width: 768px) {
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
   }
 }
 
 @layer components {
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    width: 100%;
+    max-width: 100%;
   }
   
   .section-padding {
-    @apply py-16 sm:py-20 lg:py-24;
+    @apply py-12 sm:py-16 lg:py-20;
   }
-  
+
+  /* Updated Color Palette - Emerald/Green Theme */
   .bg-yellow-custom {
-    background-color: #f5f285;
+    background-color: #fef3c7; /* Updated to lighter yellow */
   }
   
   .text-green-custom {
-    color: #1a5d3a;
+    color: #059669; /* Emerald-600 */
   }
   
   .bg-green-custom {
-    background-color: #1a5d3a;
+    background-color: #059669; /* Emerald-600 */
+  }
+
+  .text-emerald-custom {
+    color: #10b981; /* Emerald-500 */
+  }
+  
+  .bg-emerald-custom {
+    background-color: #10b981; /* Emerald-500 */
+  }
+
+  .text-emerald-dark {
+    color: #047857; /* Emerald-700 */
+  }
+  
+  .bg-emerald-dark {
+    background-color: #047857; /* Emerald-700 */
   }
   
   .hover-scale {
@@ -57,6 +92,44 @@
   
   .slide-in-right {
     animation: slideInRight 0.8s ease-out;
+  }
+
+  /* Text clamp utilities for better mobile display */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Mobile-first button styles */
+  .btn-primary {
+    @apply bg-emerald-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-medium hover:bg-emerald-700 transition-colors duration-200 shadow-md hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-700 px-4 md:px-6 py-2 md:py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200;
+  }
+
+  /* Card component */
+  .card {
+    @apply bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden;
+  }
+
+  /* Mobile-optimized spacing */
+  .mobile-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .mobile-margin {
+    @apply mx-4 sm:mx-6 lg:mx-8;
   }
 }
 
@@ -102,9 +175,9 @@
   }
 }
 
-/* Swiper custom styles */
+/* Swiper custom styles with updated colors */
 .swiper-pagination-bullet {
-  background-color: #1a5d3a !important;
+  background-color: #059669 !important; /* Emerald-600 */
   opacity: 0.5;
 }
 
@@ -114,28 +187,125 @@
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: #1a5d3a !important;
+  color: #059669 !important; /* Emerald-600 */
 }
 
 .swiper-button-next:after,
 .swiper-button-prev:after {
-  font-size: 20px !important;
+  font-size: 18px !important;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar with updated colors */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1a5d3a;
-  border-radius: 4px;
+  background: #059669; /* Emerald-600 */
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0f4a2a;
+  background: #047857; /* Emerald-700 */
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  .container-custom {
+    @apply px-3;
+  }
+
+  /* Prevent text from being too small on mobile */
+  .text-responsive {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
+
+  /* Ensure buttons are touch-friendly */
+  button, .btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Fix for mobile input zoom */
+  input, textarea, select {
+    font-size: 16px;
+  }
+}
+
+/* Tablet specific */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .container-custom {
+    @apply px-4;
+  }
+}
+
+/* Desktop specific */
+@media (min-width: 1025px) {
+  .container-custom {
+    @apply px-6;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus styles for better accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #059669;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bg-emerald-600 {
+    background-color: #000;
+  }
+  
+  .text-emerald-600 {
+    color: #000;
+  }
+}
+
+/* Dark mode support preparation */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #1f2937;
+    --text-primary: #f9fafb;
+    --accent-color: #10b981;
+  }
+}
+
+/* Loading animation */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

@@ -1,13 +1,18 @@
 'use client';
 
-// src/app/galeri/page.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Calendar, Eye } from 'lucide-react';
+import Image from 'next/image'; // Make sure this is imported
 
 export default function GaleriPage() {
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null); // Changed state name for clarity
   const [selectedCategory, setSelectedCategory] = useState('Semua');
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const categories = ['Semua', 'Kegiatan', 'Unit Usaha', 'Pelatihan', 'Workshop', 'Acara'];
 
@@ -18,7 +23,7 @@ export default function GaleriPage() {
       kategori: 'Workshop',
       tanggal: '12 Juli 2025',
       deskripsi: 'Pelatihan budidaya maggot Black Soldier Fly untuk pakan ternak alternatif',
-      gambar: '/images/galeri/workshop-maggot.jpg'
+      gambar: '/images/galeri/fotoecozyme.jpg' // Pastikan gambar ini ada di public/images/galeri
     },
     {
       id: 2,
@@ -26,7 +31,7 @@ export default function GaleriPage() {
       kategori: 'Unit Usaha',
       tanggal: '10 Juli 2025',
       deskripsi: 'Dokumentasi panen perdana maggot dengan hasil yang memuaskan',
-      gambar: '/images/galeri/panen-maggot.jpg'
+      gambar: '/images/galeri/fotogelimpah.jpg' // Pastikan gambar ini ada di public/images/galeri
     },
     {
       id: 3,
@@ -34,7 +39,7 @@ export default function GaleriPage() {
       kategori: 'Pelatihan',
       tanggal: '8 Juli 2025',
       deskripsi: 'Pelatihan pemasaran digital untuk pelaku UMKM Desa Gentan',
-      gambar: '/images/galeri/digital-marketing.jpg'
+      gambar: '/images/galeri/fotousaha.jpg' // Pastikan gambar ini ada di public/images/galeri
     },
     {
       id: 4,
@@ -42,47 +47,7 @@ export default function GaleriPage() {
       kategori: 'Kegiatan',
       tanggal: '5 Juli 2025',
       deskripsi: 'Rapat koordinasi bulanan pengurus BUMDes Gentan',
-      gambar: '/images/galeri/rapat-koordinasi.jpg'
-    },
-    {
-      id: 5,
-      judul: 'Sosialisasi Program Gelimpah',
-      kategori: 'Acara',
-      tanggal: '3 Juli 2025',
-      deskripsi: 'Sosialisasi program Gelimpah kepada masyarakat Desa Gentan',
-      gambar: '/images/galeri/sosialisasi-gelimpah.jpg'
-    },
-    {
-      id: 6,
-      judul: 'Kunjungan Komisi Desa',
-      kategori: 'Acara',
-      tanggal: '1 Juli 2025',
-      deskripsi: 'Kunjungan komisi desa untuk monitoring perkembangan BUMDes',
-      gambar: '/images/galeri/kunjungan-komisi.jpg'
-    },
-    {
-      id: 7,
-      judul: 'Workshop Pengolahan Pakan Ternak',
-      kategori: 'Workshop',
-      tanggal: '28 Juni 2025',
-      deskripsi: 'Workshop pengolahan pakan ternak menggunakan maggot BSF',
-      gambar: '/images/galeri/workshop-pakan.jpg'
-    },
-    {
-      id: 8,
-      judul: 'Pembukaan Unit Usaha Baru',
-      kategori: 'Unit Usaha',
-      tanggal: '25 Juni 2025',
-      deskripsi: 'Peresmian pembukaan unit usaha pengolahan kompos organik',
-      gambar: '/images/galeri/unit-usaha-baru.jpg'
-    },
-    {
-      id: 9,
-      judul: 'Pelatihan Kewirausahaan Pemuda',
-      kategori: 'Pelatihan',
-      tanggal: '22 Juni 2025',
-      deskripsi: 'Pelatihan kewirausahaan khusus untuk pemuda Desa Gentan',
-      gambar: '/images/galeri/pelatihan-pemuda.jpg'
+      gambar: '/images/galeri/galeri.png' // Pastikan gambar ini ada di public/images/galeri
     }
   ];
 
@@ -91,34 +56,68 @@ export default function GaleriPage() {
   );
 
   const nextImage = () => {
-    if (selectedImage !== null) {
-      const nextIndex = (selectedImage + 1) % filteredItems.length;
-      setSelectedImage(nextIndex);
+    if (selectedImageIndex !== null) {
+      const nextIdx = (selectedImageIndex + 1) % filteredItems.length;
+      setSelectedImageIndex(nextIdx);
     }
   };
 
   const prevImage = () => {
-    if (selectedImage !== null) {
-      const prevIndex = (selectedImage - 1 + filteredItems.length) % filteredItems.length;
-      setSelectedImage(prevIndex);
+    if (selectedImageIndex !== null) {
+      const prevIdx = (selectedImageIndex - 1 + filteredItems.length) % filteredItems.length;
+      setSelectedImageIndex(prevIdx);
     }
   };
+
+  // Helper to prevent body scroll when lightbox is open
+  useEffect(() => {
+    if (selectedImageIndex !== null) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset'; // Cleanup
+    };
+  }, [selectedImageIndex]);
+
+
+  if (!isClient) {
+    return (
+      <div className="pt-16">
+        <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-20">
+          <div className="container mx-auto px-4">
+            <div className="text-center">
+              <h1 className="text-5xl font-bold text-gray-900 mb-6">
+                Galeri Kegiatan
+              </h1>
+              <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+                Dokumentasi visual kegiatan, program, dan perkembangan 
+                BUMDes Gentan dalam membangun ekonomi desa
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="bg-yellow-custom py-20">
-        <div className="container-custom">
+      <section className="relative py-20 md:py-24 bg-[url('/images/background/background.jpg')] bg-cover bg-center text-white overflow-hidden">
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-5xl font-bold text-black mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Galeri Kegiatan
             </h1>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-white max-w-3xl mx-auto">
               Dokumentasi visual kegiatan, program, dan perkembangan 
               BUMDes Gentan dalam membangun ekonomi desa
             </p>
@@ -128,7 +127,7 @@ export default function GaleriPage() {
 
       {/* Filter Section */}
       <section className="py-12 bg-white border-b">
-        <div className="container-custom">
+        <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -141,7 +140,7 @@ export default function GaleriPage() {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 ${
                   selectedCategory === category
-                    ? 'bg-green-custom text-white shadow-lg'
+                    ? 'bg-emerald-600 text-white shadow-lg'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -154,44 +153,50 @@ export default function GaleriPage() {
 
       {/* Gallery Grid */}
       <section className="py-16 bg-gray-50">
-        <div className="container-custom">
-          <motion.div
-            layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {filteredItems.map((item, index) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="group cursor-pointer"
-                onClick={() => setSelectedImage(index)}
-              >
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-                  {/* Image Container */}
-                  <div className="relative aspect-[4/3] bg-gradient-to-br from-green-100 to-green-200 overflow-hidden">
-                    {/* Placeholder Image */}
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="text-center p-6">
-                        <div className="w-16 h-16 bg-green-custom rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <Calendar className="w-8 h-8 text-white" />
-                        </div>
-                        <p className="text-green-custom font-medium text-sm">
-                          {item.kategori}
-                        </p>
-                      </div>
-                    </div>
+        <div className="container mx-auto px-4">
+          {filteredItems.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-12 text-gray-600 text-lg"
+            >
+              Tidak ada item galeri dalam kategori {selectedCategory}.
+            </motion.div>
+          ) : (
+            <motion.div
+              layout // Enables layout animations for filtering
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" // Added sm:grid-cols-2 for better responsiveness
+            >
+              {filteredItems.map((item, index) => (
+                <motion.div
+                  key={`galeri-${item.id}`} // Use a unique key
+                  layout // Enables layout animation for individual item changes
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }} // Added exit animation for filtered items
+                  transition={{ duration: 0.5, delay: index * 0.05 }} // Smaller delay for smoother grid
+                  whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" }} // Added subtle shadow on hover
+                  className="group cursor-pointer bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300"
+                  onClick={() => setSelectedImageIndex(index)} // Corrected state setter
+                >
+                  {/* Image Container - Displays actual image */}
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      src={item.gambar} // Use actual image source
+                      alt={item.judul}
+                      layout="fill"
+                      objectFit="cover"
+                      quality={75}
+                      className="transform group-hover:scale-105 transition-transform duration-500" // Image zoom on hover
+                    />
 
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center">
                       <motion.div
                         initial={{ opacity: 0, scale: 0.5 }}
-                        whileHover={{ opacity: 1, scale: 1 }}
+                        whileInView={{ opacity: 1, scale: 1 }} // Changed to whileInView for initial appearance
                         transition={{ duration: 0.2 }}
-                        className="opacity-0 group-hover:opacity-100"
+                        className="opacity-0 group-hover:opacity-100" // Opacity controlled by group-hover
                       >
                         <div className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full p-4">
                           <Eye className="w-8 h-8 text-white" />
@@ -201,7 +206,7 @@ export default function GaleriPage() {
 
                     {/* Category Badge */}
                     <div className="absolute top-4 left-4">
-                      <span className="bg-green-custom text-white text-xs font-medium px-3 py-1 rounded-full">
+                      <span className="bg-emerald-600 text-white text-xs font-medium px-3 py-1 rounded-full">
                         {item.kategori}
                       </span>
                     </div>
@@ -209,94 +214,139 @@ export default function GaleriPage() {
 
                   {/* Content */}
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-gray-800 mb-2 group-hover:text-green-custom transition-colors duration-200">
+                    <h3 className="text-lg font-bold text-gray-800 mb-2 group-hover:text-emerald-600 transition-colors duration-200 line-clamp-2"> {/* Added line-clamp-2 */}
                       {item.judul}
                     </h3>
                     <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
                       <Calendar className="w-4 h-4" />
                       <span>{item.tanggal}</span>
                     </div>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className="text-gray-600 text-sm leading-relaxed line-clamp-3"> {/* Added line-clamp-3 */}
                       {item.deskripsi}
                     </p>
                   </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </div>
+      </section>
+
+      {/* Statistics Section (as is) */}
+      <section className="py-16 bg-emerald-600 text-white">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Statistik Galeri
+            </h2>
+            <p className="text-emerald-100">
+              Dokumentasi perjalanan BUMDes Gentan
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+              { number: '0+', label: 'Total Foto' },
+              { number: '0+', label: 'Kegiatan Terdokumentasi' },
+              { number: '0+', label: 'Kategori' },
+              { number: '0+', label: 'Tahun Dokumentasi' }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <div className="text-4xl md:text-5xl font-bold text-white mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-emerald-100 text-lg">
+                  {stat.label}
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Lightbox Modal */}
       <AnimatePresence>
-        {selectedImage !== null && (
+        {selectedImageIndex !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 cursor-zoom-out" // Added cursor-zoom-out
+            onClick={() => setSelectedImageIndex(null)}
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="relative max-w-4xl w-full"
-              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl w-full bg-white rounded-lg overflow-hidden shadow-2xl cursor-auto" // Added bg-white, rounded-lg, shadow-2xl, cursor-auto
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
             >
               {/* Close Button */}
               <button
-                onClick={() => setSelectedImage(null)}
-                className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors duration-200"
+                onClick={() => setSelectedImageIndex(null)}
+                className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors duration-200 z-50 p-2" // Added p-2
               >
                 <X className="w-8 h-8" />
               </button>
 
               {/* Navigation Buttons */}
               <button
-                onClick={prevImage}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition-colors duration-200"
+                onClick={(e) => { e.stopPropagation(); prevImage(); }} // Stop propagation
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition-colors duration-200 z-50 p-2 bg-black/30 rounded-full hover:bg-black/50" // Added styling
               >
                 <ChevronLeft className="w-8 h-8" />
               </button>
               <button
-                onClick={nextImage}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition-colors duration-200"
+                onClick={(e) => { e.stopPropagation(); nextImage(); }} // Stop propagation
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition-colors duration-200 z-50 p-2 bg-black/30 rounded-full hover:bg-black/50" // Added styling
               >
                 <ChevronRight className="w-8 h-8" />
               </button>
 
-              {/* Image */}
-              <div className="bg-white rounded-lg overflow-hidden">
-                <div className="aspect-[16/10] bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                  <div className="text-center p-12">
-                    <div className="w-24 h-24 bg-green-custom rounded-full mx-auto mb-6 flex items-center justify-center">
-                      <Calendar className="w-12 h-12 text-white" />
-                    </div>
-                    <p className="text-green-custom font-medium text-lg">
-                      {filteredItems[selectedImage]?.kategori}
-                    </p>
-                  </div>
+              {/* Main Image */}
+              <div className="relative aspect-[16/10] overflow-hidden"> {/* Using aspect-ratio for consistency */}
+                {selectedImageIndex !== null && ( // Ensure selectedImageIndex is not null before rendering Image
+                  <Image
+                    src={filteredItems[selectedImageIndex]?.gambar} // Use selected image source
+                    alt={filteredItems[selectedImageIndex]?.judul}
+                    layout="fill"
+                    objectFit="contain" // Use 'contain' to fit image without cropping in lightbox
+                    quality={90}
+                    priority // Prioritize loading of the opened image
+                  />
+                )}
+              </div>
+              
+              {/* Image Info */}
+              <div className="p-6 bg-white"> {/* Added bg-white for info background */}
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  {filteredItems[selectedImageIndex]?.judul}
+                </h3>
+                <div className="flex items-center gap-2 text-gray-600 mb-4">
+                  <Calendar className="w-4 h-4" />
+                  <span>{filteredItems[selectedImageIndex]?.tanggal}</span>
                 </div>
-                
-                {/* Image Info */}
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                    {filteredItems[selectedImage]?.judul}
-                  </h3>
-                  <div className="flex items-center gap-2 text-gray-600 mb-4">
-                    <Calendar className="w-4 h-4" />
-                    <span>{filteredItems[selectedImage]?.tanggal}</span>
-                  </div>
-                  <p className="text-gray-600 leading-relaxed">
-                    {filteredItems[selectedImage]?.deskripsi}
-                  </p>
-                </div>
+                <p className="text-gray-600 leading-relaxed">
+                  {filteredItems[selectedImageIndex]?.deskripsi}
+                </p>
               </div>
 
               {/* Image Counter */}
-              <div className="text-center mt-4 text-white">
-                <span>{selectedImage + 1} / {filteredItems.length}</span>
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black/50 px-3 py-1 rounded-full text-sm"> {/* Styled counter */}
+                <span>{selectedImageIndex + 1} / {filteredItems.length}</span>
               </div>
             </motion.div>
           </motion.div>
