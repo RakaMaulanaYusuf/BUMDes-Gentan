@@ -26,7 +26,7 @@ export default function UnitUsahaPage() {
   const unitUsaha = [
     {
       id: 1,
-      nama: 'GELIMPAH',
+      nama: 'GELIPAH',
       kategori: 'Pengelolaan Lingkungan & Ekonomi Sirkular',
       icon: Leaf,
       deskripsi: 'Bank Sampah “GELIPAH” (Gentan Peduli Sampah) merupakan inisiatif pengelolaan sampah kering rumah tangga yang dilakukan oleh BUMDes Gentan dengan membeli sampah dari warga, menyortirnya berdasarkan jenis plastik, dan hasil penjualannya ditabungkan dalam bentuk tabungan emas di Pegadaian. Program ini telah menjalin kerja sama resmi dengan PT. Pegadaian (Persero) dan memiliki 240 anggota aktif.',
