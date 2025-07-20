@@ -97,12 +97,12 @@ const HeroSlider = () => {
             <h1 className="text-4xl md:text-6xl font-bold text-white mt-8 animate-fadeInUp">
               Selamat Datang,
             </h1>
-            <p className="text-xl md:text-2xl text-white animate-fadeInUp animation-delay-200">
+            <p className="text-xl md:text-2xl text-white animate-fadeInUp animation-delay-200 mb-6">
               di Website BUMDes GENTAN
             </p>
-            <button className="mt-6 bg-gray-800/80 backdrop-blur-sm text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-700/80 transition-all duration-300 hover:scale-105 animate-fadeInUp animation-delay-400">
+            <a href='/profile' className="mt-6 bg-gray-800/80 backdrop-blur-sm text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-700/80 transition-all duration-300 hover:scale-105 animate-fadeInUp animation-delay-400">
               Tentang Kami
-            </button>
+            </a>
           </div>
         </div>
 
