@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Target, Eye } from 'lucide-react';
 import Image from 'next/image';
-import strukturOrganisasi from '../../../public/images/profile/image.png';
 
 export default function ProfilePage() {
   const [isClient, setIsClient] = useState(false);
@@ -47,14 +46,11 @@ export default function ProfilePage() {
   };
 
   if (!isClient) {
-    // Render a loading state or a simpler static version for SEO/initial load
-    // WARNA TEKS DISINI HARUS SESUAI DENGAN LATAR BELAKANG LOADING STATE
     return (
       <div className="pt-16 bg-[url('/images/background/background.jpg')] py-20 text-center">
-        {/* Tambahkan overlay di sini juga jika latar belakang loadingnya gelap */}
         <div className="absolute inset-0 bg-black/50"></div>
-        <h1 className="relative z-10 text-5xl font-bold text-white mb-6">Loading Profile...</h1> {/* TEKS PUTIH UNTUK KONTRAST */}
-        <p className="relative z-10 text-xl text-gray-200 max-w-3xl mx-auto"> {/* TEKS ABU-ABU TERANG UNTUK KONTRAST */}
+        <h1 className="relative z-10 text-5xl font-bold text-white mb-6">Loading Profile...</h1> 
+        <p className="relative z-10 text-xl text-gray-200 max-w-3xl mx-auto"> 
           Please wait while we load the content.
         </p>
       </div>
@@ -73,10 +69,10 @@ export default function ProfilePage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 drop-shadow-sm"> {/* TEKS PUTIH */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 drop-shadow-sm"> 
               Profil BUMDes Gentan
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-white max-w-3xl mx-auto leading-relaxed"> {/* TEKS PUTIH */}
+            <p className="text-lg md:text-xl lg:text-2xl text-white max-w-3xl mx-auto leading-relaxed"> 
               Badan Usaha Milik Desa yang berkomitmen untuk memajukan perekonomian
               masyarakat Desa Gentan melalui berbagai unit usaha yang inovatif.
             </p>
@@ -258,7 +254,7 @@ export default function ProfilePage() {
             className="flex justify-center p-4"
           >
             <Image
-              src={strukturOrganisasi}
+              src={'/images/profile/image.png'}
               alt="Struktur Organisasi BUMDes Gentan"
               width={1200}
               height={800}

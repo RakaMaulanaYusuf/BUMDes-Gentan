@@ -9,11 +9,8 @@ import Image from 'next/image';
 export default function DetailBeritaPage() {
   const params = useParams();
   const router = useRouter();
-  // Ensure beritaId is parsed correctly, handles string 'id' from URL
   const beritaId = params.id ? parseInt(params.id as string, 10) : null; 
 
-  // --- DATA BERITA (INI HARUSNYA DARI API/DATABASE NYATA) ---
-  // Pastikan ID dan path gambar sesuai dengan yang ada di public/images/berita/
   const allBerita = [
     {
       id: 1,
@@ -39,7 +36,7 @@ export default function DetailBeritaPage() {
           Mari bersama-sama mendukung inisiatif ini demi Gentan yang lebih hijau, mandiri, dan sejahtera!
         </p>
       `,
-      gambar: '/images/berita/berita1.png' // <-- Sesuaikan dengan ekstensi file gambar Anda
+      gambar: '/images/berita/berita1.png' 
     },
     {
       id: 2,
@@ -68,7 +65,7 @@ export default function DetailBeritaPage() {
           BUMDes Gentan percaya bahwa investasi pada pengetahuan dan pemberdayaan masyarakat adalah kunci utama untuk mencapai desa yang sejahtera dan berkelanjutan. Mari bergabung dan menjadi bagian dari Gerakan GELIMPAH!
         </p>
       `,
-      gambar: '/images/berita/berita2.png' // <-- Sesuaikan dengan ekstensi file gambar Anda
+      gambar: '/images/berita/berita2.png' 
     },
     {
       id: 3,
@@ -94,19 +91,11 @@ export default function DetailBeritaPage() {
           Program ini memberikan dampak positif yang nyata di tengah masyarakat. Selain membantu mengurangi volume sampah yang masuk ke TPS (Tempat Pembuangan Sementara), warga juga terdorong untuk lebih sadar akan pentingnya memilah sampah sejak dari rumah. Tak hanya itu, program ini juga memberikan edukasi tentang pentingnya menabung dan pengelolaan keuangan keluarga dengan cara yang sederhana dan ramah lingkungan.
         </p>
       `,
-      gambar: '/images/berita/berita3.png' // <-- Sesuaikan dengan ekstensi file gambar Anda
+      gambar: '/images/berita/berita3.png' 
     },
   ];
-  // --- END DATA BERITA ---
 
   const berita = allBerita.find(b => b.id === beritaId);
-
-  // Jika Anda masih ingin loading state untuk penundaan data atau API call,
-  // bisa tambahkan useEffect dan useState di sini, tapi untuk mock data ini tidak wajib.
-  // const [isLoading, setIsLoading] = useState(true);
-  // useEffect(() => { setIsLoading(false); }, []);
-  // if (isLoading) return <div className="pt-16 bg-gray-100 min-h-screen flex items-center justify-center"><p className="text-gray-600 text-xl">Loading berita...</p></div>;
-
 
   if (!berita) {
     return (
@@ -183,7 +172,6 @@ export default function DetailBeritaPage() {
                 priority
               />
             </div>
-            {/* Konten Berita Lengkap (menggunakan dangerouslySetInnerHTML) */}
             <div dangerouslySetInnerHTML={{ __html: berita.kontenLengkap }} />
           </motion.div>
 
@@ -203,15 +191,6 @@ export default function DetailBeritaPage() {
           </motion.div>
         </div>
       </section>
-
-      {/* Related News (Optional: Placeholder for future) */}
-      {/* <section className="py-16 bg-gray-100">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">Berita Terkait</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            </div>
-        </div>
-      </section> */}
     </div>
   );
 }

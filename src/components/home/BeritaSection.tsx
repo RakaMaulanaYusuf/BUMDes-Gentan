@@ -5,12 +5,11 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, User, ArrowRight, FileText } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link'; // Import Link dari next/link
+import Link from 'next/link'; 
 
 const BeritaSection = () => {
   const [imageErrors, setImageErrors] = useState<{[key: number]: boolean}>({});
 
-  // Mock data berita (pastikan ID ini konsisten dengan halaman /berita/[id])
   const mockBerita = [
     {
       id: 1,
@@ -18,7 +17,7 @@ const BeritaSection = () => {
       tanggal: '12 Juli 2025',
       tentang: 'Pelatihan',
       ringkasan: 'BUMDes Gentan mengadakan pelatihan kewirausahaan untuk meningkatkan kemampuan masyarakat dalam mengembangkan usaha mandiri. Pelatihan ini diikuti oleh 50 peserta dari berbagai kelompok masyarakat.',
-      gambar: '/images/berita/berita1.jpg', // Pastikan gambar ini ada di public/images/berita/
+      gambar: '/images/berita/berita1.jpg', 
       fallbackColor: 'from-emerald-100 to-emerald-200'
     },
     {
@@ -27,16 +26,16 @@ const BeritaSection = () => {
       tanggal: '10 Juli 2025',
       tentang: 'Inovasi',
       ringkasan: 'BUMDes Gentan meluncurkan unit usaha budidaya maggot sebagai solusi inovatif pengelolaan sampah organik. Unit usaha ini diharapkan dapat memberikan nilai tambah ekonomi bagi masyarakat.',
-      gambar: '/images/berita/berita2.jpg', // Pastikan gambar ini ada di public/images/berita/
+      gambar: '/images/berita/berita2.jpg', 
       fallbackColor: 'from-blue-100 to-blue-200'
     },
     {
-      id: 3, // Tambahkan berita ketiga ini jika Anda ingin 3 kartu
+      id: 3, 
       judul: 'BUMDes Mangesti Sejahtera Hadirkan Program "GELIPAH"',
       tanggal: '18 Juli 2025',
       tentang: 'Program',
       ringkasan: 'BUMDes Mangesti Sejahtera meluncurkan program GELIPAH (Gentang Peduli Sampah) yang mengubah sampah menjadi tabungan emas untuk warga.',
-      gambar: '/images/berita/berita3.jpg', // Pastikan gambar ini ada di public/images/berita/
+      gambar: '/images/berita/berita3.jpg', 
       fallbackColor: 'from-purple-100 to-purple-200'
     },
   ];
@@ -80,7 +79,7 @@ const BeritaSection = () => {
                 <div className="relative h-48 overflow-hidden">
                   {!imageErrors[berita.id] ? (
                     <Image
-                      src={berita.gambar} // Menggunakan gambar dari mockBerita
+                      src={berita.gambar} 
                       alt={berita.judul}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-300"
@@ -132,14 +131,12 @@ const BeritaSection = () => {
                   <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
                     {berita.ringkasan}
                   </p>
-
-                  {/* Read More Button (now part of the Link wrapping the card) */}
                   <div className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2">
                     Baca Selengkapnya
                     <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
-              </Link> {/* Penutup Link untuk seluruh kartu */}
+              </Link> 
             </motion.article>
           ))}
         </div>
@@ -152,7 +149,7 @@ const BeritaSection = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <Link href="/berita" passHref> {/* Mengarahkan ke halaman daftar berita */}
+          <Link href="/berita" passHref> 
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

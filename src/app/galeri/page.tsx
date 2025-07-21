@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Calendar, Eye } from 'lucide-react';
-import Image from 'next/image'; // Make sure this is imported
+import Image from 'next/image'; 
 
 export default function GaleriPage() {
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null); // Changed state name for clarity
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null); 
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [isClient, setIsClient] = useState(false);
 
@@ -23,7 +23,7 @@ export default function GaleriPage() {
       kategori: 'Workshop',
       tanggal: '12 Juli 2025',
       deskripsi: 'Pelatihan budidaya maggot Black Soldier Fly untuk pakan ternak alternatif',
-      gambar: '/images/galeri/fotoecozyme.jpg' // Pastikan gambar ini ada di public/images/galeri
+      gambar: '/images/galeri/fotoecozyme.jpg' 
     },
     {
       id: 2,
@@ -31,7 +31,7 @@ export default function GaleriPage() {
       kategori: 'Unit Usaha',
       tanggal: '10 Juli 2025',
       deskripsi: 'Dokumentasi panen perdana maggot dengan hasil yang memuaskan',
-      gambar: '/images/galeri/fotogelimpah.jpg' // Pastikan gambar ini ada di public/images/galeri
+      gambar: '/images/galeri/fotogelimpah.jpg' 
     },
     {
       id: 3,
@@ -39,7 +39,7 @@ export default function GaleriPage() {
       kategori: 'Pelatihan',
       tanggal: '8 Juli 2025',
       deskripsi: 'Pelatihan pemasaran digital untuk pelaku UMKM Desa Gentan',
-      gambar: '/images/galeri/fotousaha.jpg' // Pastikan gambar ini ada di public/images/galeri
+      gambar: '/images/galeri/fotousaha.jpg' 
     },
     {
       id: 4,
@@ -47,7 +47,7 @@ export default function GaleriPage() {
       kategori: 'Kegiatan',
       tanggal: '5 Juli 2025',
       deskripsi: 'Rapat koordinasi bulanan pengurus BUMDes Gentan',
-      gambar: '/images/galeri/galeri.png' // Pastikan gambar ini ada di public/images/galeri
+      gambar: '/images/galeri/galeri.png' 
     }
   ];
 
@@ -69,7 +69,6 @@ export default function GaleriPage() {
     }
   };
 
-  // Helper to prevent body scroll when lightbox is open
   useEffect(() => {
     if (selectedImageIndex !== null) {
       document.body.style.overflow = 'hidden';
@@ -77,7 +76,7 @@ export default function GaleriPage() {
       document.body.style.overflow = 'unset';
     }
     return () => {
-      document.body.style.overflow = 'unset'; // Cleanup
+      document.body.style.overflow = 'unset'; 
     };
   }, [selectedImageIndex]);
 
@@ -164,39 +163,39 @@ export default function GaleriPage() {
             </motion.div>
           ) : (
             <motion.div
-              layout // Enables layout animations for filtering
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" // Added sm:grid-cols-2 for better responsiveness
+              layout 
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" 
             >
               {filteredItems.map((item, index) => (
                 <motion.div
-                  key={`galeri-${item.id}`} // Use a unique key
-                  layout // Enables layout animation for individual item changes
+                  key={`galeri-${item.id}`} 
+                  layout 
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }} // Added exit animation for filtered items
-                  transition={{ duration: 0.5, delay: index * 0.05 }} // Smaller delay for smoother grid
-                  whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" }} // Added subtle shadow on hover
+                  exit={{ opacity: 0, scale: 0.8 }} 
+                  transition={{ duration: 0.5, delay: index * 0.05 }} 
+                  whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" }} 
                   className="group cursor-pointer bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300"
-                  onClick={() => setSelectedImageIndex(index)} // Corrected state setter
+                  onClick={() => setSelectedImageIndex(index)} 
                 >
                   {/* Image Container - Displays actual image */}
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
-                      src={item.gambar} // Use actual image source
+                      src={item.gambar} 
                       alt={item.judul}
                       layout="fill"
                       objectFit="cover"
                       quality={75}
-                      className="transform group-hover:scale-105 transition-transform duration-500" // Image zoom on hover
+                      className="transform group-hover:scale-105 transition-transform duration-500" 
                     />
 
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center">
                       <motion.div
                         initial={{ opacity: 0, scale: 0.5 }}
-                        whileInView={{ opacity: 1, scale: 1 }} // Changed to whileInView for initial appearance
+                        whileInView={{ opacity: 1, scale: 1 }} 
                         transition={{ duration: 0.2 }}
-                        className="opacity-0 group-hover:opacity-100" // Opacity controlled by group-hover
+                        className="opacity-0 group-hover:opacity-100" 
                       >
                         <div className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full p-4">
                           <Eye className="w-8 h-8 text-white" />
@@ -221,7 +220,7 @@ export default function GaleriPage() {
                       <Calendar className="w-4 h-4" />
                       <span>{item.tanggal}</span>
                     </div>
-                    <p className="text-gray-600 text-sm leading-relaxed line-clamp-3"> {/* Added line-clamp-3 */}
+                    <p className="text-gray-600 text-sm leading-relaxed line-clamp-3"> 
                       {item.deskripsi}
                     </p>
                   </div>
@@ -284,54 +283,54 @@ export default function GaleriPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 cursor-zoom-out" // Added cursor-zoom-out
+            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 cursor-zoom-out" 
             onClick={() => setSelectedImageIndex(null)}
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="relative max-w-4xl w-full bg-white rounded-lg overflow-hidden shadow-2xl cursor-auto" // Added bg-white, rounded-lg, shadow-2xl, cursor-auto
-              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+              className="relative max-w-4xl w-full bg-white rounded-lg overflow-hidden shadow-2xl cursor-auto" 
+              onClick={(e) => e.stopPropagation()} 
             >
               {/* Close Button */}
               <button
                 onClick={() => setSelectedImageIndex(null)}
-                className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors duration-200 z-50 p-2" // Added p-2
+                className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors duration-200 z-50 p-2" 
               >
                 <X className="w-8 h-8" />
               </button>
 
               {/* Navigation Buttons */}
               <button
-                onClick={(e) => { e.stopPropagation(); prevImage(); }} // Stop propagation
+                onClick={(e) => { e.stopPropagation(); prevImage(); }} 
                 className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition-colors duration-200 z-50 p-2 bg-black/30 rounded-full hover:bg-black/50" // Added styling
               >
                 <ChevronLeft className="w-8 h-8" />
               </button>
               <button
-                onClick={(e) => { e.stopPropagation(); nextImage(); }} // Stop propagation
+                onClick={(e) => { e.stopPropagation(); nextImage(); }} 
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition-colors duration-200 z-50 p-2 bg-black/30 rounded-full hover:bg-black/50" // Added styling
               >
                 <ChevronRight className="w-8 h-8" />
               </button>
 
               {/* Main Image */}
-              <div className="relative aspect-[16/10] overflow-hidden"> {/* Using aspect-ratio for consistency */}
-                {selectedImageIndex !== null && ( // Ensure selectedImageIndex is not null before rendering Image
+              <div className="relative aspect-[16/10] overflow-hidden"> 
+                {selectedImageIndex !== null && ( 
                   <Image
-                    src={filteredItems[selectedImageIndex]?.gambar} // Use selected image source
+                    src={filteredItems[selectedImageIndex]?.gambar} 
                     alt={filteredItems[selectedImageIndex]?.judul}
                     layout="fill"
-                    objectFit="contain" // Use 'contain' to fit image without cropping in lightbox
+                    objectFit="contain" 
                     quality={90}
-                    priority // Prioritize loading of the opened image
+                    priority 
                   />
                 )}
               </div>
               
               {/* Image Info */}
-              <div className="p-6 bg-white"> {/* Added bg-white for info background */}
+              <div className="p-6 bg-white"> 
                 <h3 className="text-2xl font-bold text-gray-800 mb-2">
                   {filteredItems[selectedImageIndex]?.judul}
                 </h3>

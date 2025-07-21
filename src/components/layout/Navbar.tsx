@@ -14,7 +14,6 @@ const Navbar = () => {
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
 
-  // Handle mounting to prevent hydration mismatch
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -30,7 +29,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMounted]);
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
     if (!isMounted) return;
     
@@ -40,7 +38,6 @@ const Navbar = () => {
       document.body.style.overflow = 'unset';
     }
 
-    // Cleanup function to reset overflow when component unmounts
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -53,22 +50,19 @@ const Navbar = () => {
     { name: 'GALERI', path: '/galeri' },
     { name: 'UNIT USAHA', path: '/unit-usaha' }
   ];
-
-  // Don't render scroll-dependent styles until mounted
   if (!isMounted) {
     return (
       <nav className="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm transition-all duration-300">
-        {/* Mengubah container-custom menjadi container mx-auto px-4 */}
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div>
               <Link href="/" className="flex items-center space-x-2">
                 <Image
-                  src="/images/logo/logo2.png" // Path relatif dari folder 'public'
+                  src="/images/logo/logo2.png" 
                   alt="Logo BUMDes Gentan"
-                  width={40} // Lebar yang diinginkan dalam piksel
-                  height={40} // Tinggi yang diinginkan dalam piksel
+                  width={40} 
+                  height={40} 
                 />
                 <div className="text-2xl font-bold text-black">
                   BUMDes
@@ -120,7 +114,6 @@ const Navbar = () => {
           isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
         }`}
       >
-        {/* Mengubah container-custom menjadi container mx-auto px-4 */}
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -130,10 +123,10 @@ const Navbar = () => {
             >
               <Link href="/" className="flex items-center space-x-2">
                 <Image
-                    src="/images/logo/logo2.png" // Path relatif dari folder 'public'
+                    src="/images/logo/logo2.png" 
                     alt="Logo BUMDes Gentan"
-                    width={40} // Lebar yang diinginkan dalam piksel
-                    height={40} // Tinggi yang diinginkan dalam piksel
+                    width={40} 
+                    height={40} 
                   />
                 <div className="text-2xl font-bold text-black">
                   BUMDes
@@ -197,7 +190,6 @@ const Navbar = () => {
             
             {/* Menu content */}
             <div className="relative z-10 flex flex-col justify-center items-center h-full px-6">
-              {/* Logo in menu */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}

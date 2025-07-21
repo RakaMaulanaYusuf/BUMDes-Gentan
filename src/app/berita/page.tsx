@@ -23,7 +23,7 @@ export default function BeritaPage() {
       kategori: 'Unit Usaha',
       penulis: 'Admin BUMDes',
       ringkasan: 'BUMDes Gentan mengembangkan unit usaha budidaya maggot Black Soldier Fly sebagai alternatif pakan ternak yang berkelanjutan dan ramah lingkungan.',
-      gambar: '/images/berita/berita1.png' // <-- Sesuaikan dengan ekstensi file gambar Anda
+      gambar: '/images/berita/berita1.png' 
     },
     {
       id: 2,
@@ -32,7 +32,7 @@ export default function BeritaPage() {
       kategori: 'Program',
       penulis: 'Tim Gelimpah',
       ringkasan: 'Meluncurkan program Gelimpah yang fokus pada peningkatan literasi dan pemberdayaan ekonomi masyarakat Desa Gentan melalui berbagai pelatihan dan workshop.',
-      gambar: '/images/berita/berita2.png' // <-- Sesuaikan dengan ekstensi file gambar Anda
+      gambar: '/images/berita/berita2.png' 
     },
     {
       id: 3,
@@ -41,7 +41,7 @@ export default function BeritaPage() {
       kategori: 'Program',
       penulis: 'Admin BUMDes',
       ringkasan: 'BUMDes Mangesti Sejahtera meluncurkan program GELIPAH (Gentang Peduli Sampah) yang mengubah sampah menjadi tabungan emas, meningkatkan kesejahteraan dan kesadaran lingkungan.',
-      gambar: '/images/berita/berita3.png' // <-- Sesuaikan dengan ekstensi file gambar Anda
+      gambar: '/images/berita/berita3.png' 
     },
   ];
 
@@ -210,8 +210,6 @@ export default function BeritaPage() {
                       <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
                         {berita.ringkasan}
                       </p>
-
-                      {/* Read More Button (now just a visual cue since the whole card is a link) */}
                       <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
